@@ -1,3 +1,4 @@
-rootProject.name = "RepVault"
+rootProject.name = "repvault"
 
 include("backend")
+include("lib")

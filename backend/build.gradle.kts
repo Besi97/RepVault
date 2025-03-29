@@ -6,7 +6,6 @@ plugins {
 	kotlin("kapt") version "1.9.25"
 }
 
-group = "dev.besi.repvault"
 version = "0.0.1-SNAPSHOT"
 
 var mapstructVersion = "1.6.3"
