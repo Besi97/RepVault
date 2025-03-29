@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: backend
+  graphql:
+    schema:
+      locations: classpath*:graphql/**/

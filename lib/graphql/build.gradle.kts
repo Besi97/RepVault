@@ -20,10 +20,9 @@ dependencies {
 
 val generatedCodePath = "${layout.projectDirectory}/src/generated"
 val customPackageName = "${rootProject.group}.${project.group}.${project.name}"
-println("Package name: $customPackageName")
 
 tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
-    graphqlSchemaPaths = listOf("schema/schema.graphqls")
+    graphqlSchemaPaths = listOf("${layout.projectDirectory}/schema/schema.graphqls")
     outputDir = File(generatedCodePath)
     packageName = customPackageName
     apiPackageName = "$customPackageName.api"
@@ -41,16 +40,25 @@ tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
 
     doLast {
         val sourceFile = file("schema/schema.graphqls")
-        val destinationFile = file("src/generated/resources/schema.graphqls")
+        val destinationFile = file("src/generated/resources/graphql/schema.graphqls")
         destinationFile.parentFile.mkdirs()
         sourceFile.copyTo(destinationFile, overwrite = true)
     }
 }
 
-sourceSets.getByName("main").kotlin.srcDirs(generatedCodePath)
+sourceSets {
+    main {
+        resources.srcDirs("src/generated/resources")
+        kotlin.srcDirs(generatedCodePath)
+    }
+}
 
 java {
     withSourcesJar()
+}
+
+tasks.named("processResources") {
+    dependsOn("graphqlCodegen")
 }
 
 tasks.named<KotlinCompile>("compileKotlin") {
