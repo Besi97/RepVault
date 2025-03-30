@@ -4,3 +4,6 @@ spring:
   graphql:
     schema:
       locations: classpath*:graphql/**/
+  jpa:
+    generate-ddl: true
+    show-sql: true

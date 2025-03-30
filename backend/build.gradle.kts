@@ -5,6 +5,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("kapt")
 	id("com.google.cloud.tools.jib") version "3.4.5"
+	kotlin("plugin.jpa")
+	kotlin("plugin.allopen")
 }
 
 version = "0.0.1-SNAPSHOT"
@@ -29,12 +31,20 @@ dependencies {
 	implementation(project(":lib:graphql"))
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	kapt("org.mapstruct:mapstruct-processor:${mapstructVersion}")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
+	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.Embeddable")
+	annotation("jakarta.persistence.MappedSuperclass")
 }
 
 kotlin {

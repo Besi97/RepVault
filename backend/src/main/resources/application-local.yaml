@@ -2,3 +2,7 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  datasource:
+    url: jdbc:mariadb://localhost:3306/repvault
+    username: repvault
+    password: repvault
