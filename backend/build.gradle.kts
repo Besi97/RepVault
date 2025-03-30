@@ -1,9 +1,9 @@
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
+	kotlin("jvm")
+	kotlin("plugin.spring")
 	id("org.springframework.boot") version "3.4.4"
 	id("io.spring.dependency-management") version "1.1.7"
-	kotlin("kapt") version "1.9.25"
+	kotlin("kapt")
 	id("com.google.cloud.tools.jib") version "3.4.5"
 }
 

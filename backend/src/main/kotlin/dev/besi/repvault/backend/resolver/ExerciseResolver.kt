@@ -15,6 +15,7 @@ class ExerciseResolver :
     DeleteExerciseMutationResolver {
 
     val barbellCurl = Exercise(
+        id = "barbell-curl",
         name = "Barbell Curl",
         aliases = listOf("Standing Barbell Curl"),
         primaryMuscles = listOf(Muscle.BICEPS),
@@ -38,6 +39,7 @@ class ExerciseResolver :
     override fun exercises(): List<Exercise> {
 
         val pushUp = Exercise(
+            id = "push-up",
             name = "Push-Up",
             aliases = listOf("Pushup", "Press-Up"),
             primaryMuscles = listOf(Muscle.CHEST),
@@ -59,6 +61,7 @@ class ExerciseResolver :
         )
 
         val deadlift = Exercise(
+            id = "deadlift",
             name = "Deadlift",
             aliases = null, // No aliases available
             primaryMuscles = listOf(Muscle.HAMSTRINGS, Muscle.GLUTES, Muscle.LOWER_BACK),

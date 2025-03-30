@@ -26,10 +26,11 @@ input ExerciseInput {
     category: Category!
     instructions: [String!]!
     description: String
-    tips: [String]
+    tips: [String!]
 }
 
 type Exercise {
+    id: ID
     name: String!
     aliases: [String!]
     primaryMuscles: [Muscle!]!
@@ -41,7 +42,7 @@ type Exercise {
     category: Category!
     instructions: [String!]!
     description: String
-    tips: [String]
+    tips: [String!]
 }
 
 enum Muscle {
