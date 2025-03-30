@@ -12,15 +12,15 @@ data class Exercise(
     val name: String,
 
     @ElementCollection
-    val aliases: List<String>?,
+    val aliases: Collection<String>?,
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    val primaryMuscles: List<Muscle> = emptyList(),
+    val primaryMuscles: Collection<Muscle> = emptyList(),
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    val secondaryMuscles: List<Muscle>?,
+    val secondaryMuscles: Collection<Muscle>?,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "force_type")
@@ -42,14 +42,14 @@ data class Exercise(
 
     @ElementCollection
     @Column(columnDefinition = "TEXT")
-    val instructions: List<String> = emptyList(),
+    val instructions: Collection<String> = emptyList(),
 
     @Column(columnDefinition = "TEXT")
     val description: String? = null,
 
     @ElementCollection
     @Column(columnDefinition = "TEXT")
-    val tips: List<String>? = emptyList()
+    val tips: Collection<String>? = emptyList()
 )
 
 enum class Force {
