@@ -1,17 +1,15 @@
 plugins {
-	kotlin("jvm")
-	kotlin("plugin.spring")
-	id("org.springframework.boot") version "3.4.4"
-	id("io.spring.dependency-management") version "1.1.7"
-	kotlin("kapt")
-	id("com.google.cloud.tools.jib") version "3.4.5"
-	kotlin("plugin.jpa")
-	kotlin("plugin.allopen")
+	alias(libs.plugins.kotlin)
+	alias(libs.plugins.spring)
+	alias(libs.plugins.kapt)
+	alias(libs.plugins.jpa)
+	alias(libs.plugins.allopen)
+	alias(libs.plugins.springBoot)
+	alias(libs.plugins.springDepMan)
+	alias(libs.plugins.jib)
 }
 
 version = "0.0.1-SNAPSHOT"
-
-var mapstructVersion = "1.6.3"
 
 java {
 	toolchain {
@@ -24,21 +22,21 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-graphql")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+	implementation(libs.spring.boot.starter.graphql)
+	implementation(libs.spring.boot.starter.actuator)
+	implementation(libs.spring.boot.starter.web)
+	implementation(libs.spring.boot.starter.jpa)
+	implementation(libs.jackson.kotlin)
+	implementation(libs.kotlin.reflect)
+	implementation(libs.mapstruct)
+	kapt(libs.mapstruct.processor)
 	implementation(project(":lib:graphql"))
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	kapt("org.mapstruct:mapstruct-processor:${mapstructVersion}")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("org.springframework.graphql:spring-graphql-test")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	runtimeOnly(libs.mariadb)
+	developmentOnly(libs.spring.boot.devtools)
+	testImplementation(libs.spring.test)
+	testImplementation(libs.spring.graphql.test)
+	testImplementation(libs.kotlin.test.junit5)
+	testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 allOpen {

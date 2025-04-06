@@ -4,10 +4,9 @@ import org.gradle.jvm.tasks.Jar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    java
-    kotlin("jvm")
-    id("io.github.kobylynskyi.graphql.codegen") version "5.10.0"
-    `maven-publish`
+    alias(libs.plugins.java)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.graphqlCodegen)
 }
 
 repositories {
@@ -15,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.graphql:spring-graphql:1.3.4")
+    implementation(libs.spring.graphql)
 }
 
 val generatedCodePath = "${layout.projectDirectory}/src/generated"
@@ -65,17 +64,12 @@ tasks.named<KotlinCompile>("compileKotlin") {
     dependsOn("graphqlCodegen")
 }
 
-tasks.named<Jar>("sourcesJar") {
-    dependsOn("graphqlCodegen")
+tasks.named("clean") {
+    doLast {
+        delete(generatedCodePath)
+    }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("repvault-api-models-jvm") {
-            groupId = customPackageName
-            artifactId = "repvault-api-models-jvm"
-            version = "0.0.1"
-            from(components["java"])
-        }
-    }
+tasks.named<Jar>("sourcesJar") {
+    dependsOn("graphqlCodegen")
 }
