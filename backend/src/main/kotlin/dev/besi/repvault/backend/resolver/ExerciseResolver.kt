@@ -10,6 +10,7 @@ import dev.besi.repvault.lib.graphql.model.Exercise
 import dev.besi.repvault.lib.graphql.model.ExerciseInput
 import org.springframework.stereotype.Controller
 import java.lang.Long.parseLong
+import java.util.Optional
 
 @Controller
 class ExerciseResolver(
@@ -21,8 +22,12 @@ class ExerciseResolver(
     UpdateExerciseMutationResolver,
     DeleteExerciseMutationResolver {
 
-    override fun exercises(): List<Exercise> =
-        exerciseRepository.findAll()
+    override fun exercises(id: String?): List<Exercise> =
+        Optional.ofNullable(id)
+            .map { parseLong(it) }
+            .flatMap { exerciseRepository.findById(it) }
+            .map { listOf(it) }
+            .orElse(exerciseRepository.findAll())
             .map { exerciseMapper.toGraphQL(it) }
 
     override fun createExercise(input: ExerciseInput): Exercise =

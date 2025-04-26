@@ -4,7 +4,8 @@ schema {
 }
 
 type Query {
-    exercises: [Exercise!]!
+    """ Retrieves a single exercise with the given, or all exercises if id is not provided """
+    exercises(id: ID): [Exercise!]!
 }
 
 
