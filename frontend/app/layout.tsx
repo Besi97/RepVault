@@ -1,6 +1,7 @@
 import {ReactNode} from "react";
-import {ThemeProvider} from "@/app/ThemeProvider";
 import "./global.css";
+import ConfiguredQueryClientProvider from "@/app/providers/ConfiguredQueryClientProvider";
+import {ThemeProvider} from "@/app/providers/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -10,9 +11,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ConfiguredQueryClientProvider>
+          <ThemeProvider>
+            <div className="p-8">
+              {children}
+            </div>
+          </ThemeProvider>
+        </ConfiguredQueryClientProvider>
       </body>
     </html>
   );
