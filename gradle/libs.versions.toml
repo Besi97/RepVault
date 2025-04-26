@@ -43,3 +43,4 @@ kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 graphqlCodegen = { id = "io.github.kobylynskyi.graphql.codegen", version.ref = "graphql-codegen"}
+nodeGradle = { id = "com.github.node-gradle.node", version = "7.0.1"}

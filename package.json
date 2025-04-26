@@ -1,0 +1,12 @@
+{
+  "name": "repvault",
+  "private": true,
+  "workspaces": [
+    "lib/graphql/src/generated/typescript",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=frontend",
+    "dev": "npm run dev --workspace=frontend"
+  }
+}

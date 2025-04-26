@@ -1,0 +1,27 @@
+query Exercises {
+    exercises {
+        ...fullExercise
+    }
+}
+
+mutation CreateExercise($input: ExerciseInput!) {
+    createExercise(input: $input) {
+        ...fullExercise
+    }
+}
+
+fragment fullExercise on Exercise {
+    id
+    name
+    aliases
+    primaryMuscles
+    secondaryMuscles
+    force
+    level
+    mechanic
+    equipment
+    category
+    instructions
+    description
+    tips
+}

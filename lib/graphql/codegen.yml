@@ -1,0 +1,21 @@
+schema: schema/schema.graphqls
+documents: "schema/**/*.graphql"
+generates:
+  src/generated/typescript/client.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      fetcher:
+        endpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
+        fetchParams:
+          headers:
+            Content-Type: application/json
+      dedupeFragments: true
+      exposeQueryKeys: true
+      exposeFetcher: true
+      reactQueryVersion: 5

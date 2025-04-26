@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "repvault-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,10 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.1"
+    "next": "15.3.1",
+    "repvault-api-client": "*",
+    "@tanstack/react-query": "^5.74.4",
+    "@heroicons/react": "^2.2.0"
   },
   "devDependencies": {
     "typescript": "^5",
@@ -25,6 +28,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "@eslint/eslintrc": "^3",
-    "swr": "^2.3.3"
+    "formik": "^2.4.6"
   }
 }
