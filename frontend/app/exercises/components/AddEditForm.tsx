@@ -1,7 +1,7 @@
 import {FunctionComponent} from "react";
 import {Button, Option} from "@material-tailwind/react";
 import {Form, Formik} from "formik";
-import {Category, Equipment, ExerciseInput, Force, Level, Mechanic, Muscle} from "repvault-api-client";
+import {Category, Equipment, Exercise, ExerciseInput, Force, Level, Mechanic, Muscle} from "repvault-api-client";
 import TextField from "@/app/components/Form/TextField";
 import Select from "@/app/components/Form/Select";
 import MultiSelect from "@/app/components/Form/MultiSelect";
@@ -9,9 +9,9 @@ import InstructionsField from "@/app/components/Form/InstructionsField";
 
 interface Props {
   /**
-   * ID of the exercise to edit. If not provided, a new exercise will be created.
+   * Exercise to edit. If not provided, a new exercise will be created.
    */
-  exerciseId?: string;
+  exercise?: Exercise;
   onSubmit: (exercise: ExerciseInput, finalizeSubmit?: () => void) => void;
 }
 
@@ -38,10 +38,14 @@ const validate = (values: Partial<ExerciseInput>): Partial<Record<keyof Exercise
 const isValid = (values: Partial<ExerciseInput>): values is ExerciseInput =>
   Object.keys(validate(values)).length === 0;
 
-const AddEditForm: FunctionComponent<Props> = ({exerciseId, onSubmit}) => {
+const AddEditForm: FunctionComponent<Props> = ({exercise, onSubmit}) => {
+  // remove id from exerciseInput, otherwise it causes a validation error on save
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {id, ...exerciseInput} = exercise ?? {};
   return (<Formik
-      initialValues={{}}
-      isInitialValid={false}
+      initialValues={{...exerciseInput}}
+      enableReinitialize
+      validateOnMount
       validate={validate}
       onSubmit={(values: Partial<ExerciseInput>, {setSubmitting}) => {
         if (isValid(values)) {
@@ -84,7 +88,7 @@ const AddEditForm: FunctionComponent<Props> = ({exerciseId, onSubmit}) => {
           <InstructionsField label="Tips" name="tips"/>
           <div className="flex justify-end w-full">
             <Button type="submit" loading={isSubmitting} disabled={!isValid || isSubmitting}>
-              {exerciseId === undefined ? "Create" : "Save"}
+              {exercise === undefined ? "Create" : "Save"}
             </Button>
           </div>
         </Form>

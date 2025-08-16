@@ -14,8 +14,10 @@ interface Props extends InputProps {
 }
 
 const TextField: FunctionComponent<Props> = ({label, name, isList, required, ...props}) => {
-  const [field, {touched, error}, {setValue}] = useField<string | string[]>(name);
-  const [displayValue, setDisplayValue] = useState<string>("");
+  const [field, {touched, error}, {setValue}] = useField<string | string[] | undefined>(name);
+  const [displayValue, setDisplayValue] = useState<string>(
+    !field?.value?.length ? "" : typeof field.value === "string" ? field.value : field.value.join(", ")
+  );
 
   return (
     <FormFieldWrapper error={touched ? error : undefined} required={required}>

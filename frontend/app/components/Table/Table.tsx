@@ -1,5 +1,6 @@
 import {Typography} from "@material-tailwind/react";
 import {Key, ReactNode} from "react";
+import RowActionButton, {RowAction} from "@/app/components/Table/RowActionButton";
 
 interface Column<T> {
   header: string,
@@ -10,11 +11,12 @@ interface Props<T> {
   data: T[];
   columns: Column<T>[]
   rowKey: (row: T) => Key;
+  rowActions?: RowAction<T>[];
 }
 
-const Table = <T, >({data, columns, rowKey}: Props<T>): ReactNode => {
+const Table = <T, >({data, columns, rowKey, rowActions}: Props<T>): ReactNode => {
   return (
-    <table className="w-full min-w-max table-auto text-left rounded-xl overflow-hidden outline-1 outline-blue-gray-100">
+    <table className="w-full min-w-fit table-auto text-left rounded-xl outline-1 outline-blue-gray-100">
       <thead>
         <tr className="border-b border-blue-gray-100 bg-blue-gray-50">
           {columns.map(({header}) =>
@@ -28,6 +30,7 @@ const Table = <T, >({data, columns, rowKey}: Props<T>): ReactNode => {
               </Typography>
             </th>
           )}
+          {rowActions?.length && <th key="row-actions"></th>}
         </tr>
       </thead>
       <tbody>
@@ -36,11 +39,23 @@ const Table = <T, >({data, columns, rowKey}: Props<T>): ReactNode => {
 
           return (
             <tr key={rowKey(row)} {...(isLast ? {} : {className: "border-b border-blue-gray-50"})}>
-              {columns.map(({header, accessor}) => <td key={header} className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal">
-                  {accessor(row)}
-                </Typography>
-              </td>)}
+              {columns.map(({header, accessor}) =>
+                <td key={header} className="p-4">
+                  <Typography variant="small" color="blue-gray" className="font-normal">
+                    {accessor(row)}
+                  </Typography>
+                </td>
+              )}
+              {rowActions?.length &&
+                  // w-0 is necessary to avoid extra space on the right
+                  <td className="w-0">
+                      <div className="flex flex-row px-2 gap-1">
+                        {rowActions.map((action, index) =>
+                          <RowActionButton {...action} row={row} key={`${rowKey(row)}-action-${index}`}/>
+                        )}
+                      </div>
+                  </td>
+              }
             </tr>
           );
         })}

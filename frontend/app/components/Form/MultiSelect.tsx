@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Select,
   Checkbox,
@@ -34,11 +34,15 @@ const MultiSelect: React.FunctionComponent<MultiSelectProps> = ({label, name, op
       : [...(selectedValues ?? []), newValue];
 
     setSelectedValues(newValues);
-    setDisplayValue(newValues?.length > 0
-      ? `${newValues.length} selected`
-      : undefined);
   };
-  
+
+  useEffect(() =>
+      setDisplayValue(selectedValues?.length > 0
+        ? `${selectedValues.length} selected`
+        : undefined),
+    [selectedValues]
+  );
+
   return (
     <FormFieldWrapper error={touched ? error : undefined} required={required}>
       <Select

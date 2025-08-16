@@ -1,5 +1,5 @@
-query Exercises {
-    exercises {
+query Exercises($id: ID) {
+    exercises(id: $id) {
         ...fullExercise
     }
 }
@@ -8,6 +8,16 @@ mutation CreateExercise($input: ExerciseInput!) {
     createExercise(input: $input) {
         ...fullExercise
     }
+}
+
+mutation UpdateExercise($id: ID!, $input: ExerciseInput!) {
+    updateExercise(id: $id, input: $input) {
+        ...fullExercise
+    }
+}
+
+mutation DeleteExercise($id: ID!) {
+    deleteExercise(id: $id)
 }
 
 fragment fullExercise on Exercise {
