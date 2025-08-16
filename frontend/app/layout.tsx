@@ -2,6 +2,7 @@ import {ReactNode} from "react";
 import "./global.css";
 import ConfiguredQueryClientProvider from "@/app/providers/ConfiguredQueryClientProvider";
 import {ThemeProvider} from "@/app/providers/ThemeProvider";
+import Navigation from "@/app/components/Navigation/Navigation";
 
 export default function RootLayout({
   children,
@@ -13,6 +14,7 @@ export default function RootLayout({
       <body>
         <ConfiguredQueryClientProvider>
           <ThemeProvider>
+            <Navigation />
             <div className="p-8">
               {children}
             </div>
