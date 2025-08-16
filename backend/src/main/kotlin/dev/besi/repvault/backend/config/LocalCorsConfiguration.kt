@@ -10,16 +10,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @Profile("local")
 class LocalCorsConfiguration {
-    @Bean
-    fun corsConfigurer(): WebMvcConfigurer {
-        return object : WebMvcConfigurer {
-            override fun addCorsMappings(@NotNull registry: CorsRegistry) {
-                registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:3000")
-                    .allowedMethods("*")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-            }
-        }
-    }
+	@Bean
+	fun corsConfigurer(): WebMvcConfigurer {
+		return object : WebMvcConfigurer {
+			override fun addCorsMappings(@NotNull registry: CorsRegistry) {
+				registry.addMapping("/**")
+					.allowedOrigins("http://localhost:3000")
+					.allowedMethods("*")
+					.allowedHeaders("*")
+					.allowCredentials(true)
+			}
+		}
+	}
 }
