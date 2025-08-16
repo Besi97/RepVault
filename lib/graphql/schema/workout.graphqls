@@ -1,3 +1,14 @@
+extend type Query {
+    """ Retrieves a single workout with the given ID, or all workouts if ID is not provided """
+    workouts(id: ID): [Workout!]!
+}
+
+extend type Mutation {
+    createWorkout(input: WorkoutInput!): Workout!
+    updateWorkout(id: ID!, input: WorkoutInput!): Workout!
+    deleteWorkout(id: ID!): Boolean!
+}
+
 type Workout {
     id: ID!
     name: String!

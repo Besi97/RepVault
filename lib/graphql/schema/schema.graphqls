@@ -3,20 +3,5 @@ schema {
     mutation: Mutation
 }
 
-type Query {
-    """ Retrieves a single exercise with the given ID, or all exercises if ID is not provided """
-    exercises(id: ID): [Exercise!]!
-    """ Retrieves a single workout with the given ID, or all workouts if ID is not provided """
-    workouts(id: ID): [Workout!]!
-}
-
-
-type Mutation {
-    createExercise(input: ExerciseInput!): Exercise!
-    updateExercise(id: ID!, input: ExerciseInput!): Exercise!
-    deleteExercise(id: ID!): Boolean!
-
-    createWorkout(input: WorkoutInput!): Workout!
-    updateWorkout(id: ID!, input: WorkoutInput!): Workout!
-    deleteWorkout(id: ID!): Boolean!
-}
+type Query
+type Mutation
