@@ -5,11 +5,11 @@ import {useDeleteExerciseMutation, useExercisesQuery} from "repvault-api-client"
 import {Button, Spinner} from "@material-tailwind/react";
 import {PencilIcon, TrashIcon} from "@heroicons/react/24/solid";
 
-export default function Home() {
+export default function Exercises() {
   const {isPending, data, refetch} = useExercisesQuery()
   const {mutate: deleteExercise} = useDeleteExerciseMutation();
 
-  return isPending ? <Spinner className="h-8 w-8"/> : (
+  return isPending ? <Spinner className="h-8 w-8 mx-auto"/> : (
     <>
       <a href="exercises/add">
         <Button className="mb-4" size="sm" variant="outlined" ripple={false}>Add</Button>
