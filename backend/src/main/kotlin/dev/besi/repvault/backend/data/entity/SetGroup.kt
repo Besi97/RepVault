@@ -9,5 +9,5 @@ data class SetGroup(
 	val id: Long,
 
 	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-	val sets: Collection<Set>,
+	val sets: Collection<ExerciseSet>,
 )

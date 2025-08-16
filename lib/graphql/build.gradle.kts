@@ -25,7 +25,10 @@ node {
 }
 
 val generatedCodePath = "${layout.projectDirectory}/src/generated"
-val schemaPath = "${layout.projectDirectory}/schema/schema.graphqls"
+val schemaDir = "${layout.projectDirectory}/schema"
+val schemaPaths = fileTree(schemaDir)
+    .filter { it.name.endsWith(".graphqls") }
+    .map { it.path }
 val generatedTsCodePath = "$generatedCodePath/typescript"
 
 val installTypescriptGraphQLCodegen by tasks.register<NpmTask>("installTypescriptGraphQLCodegen") {
@@ -54,7 +57,7 @@ tasks.register<NpmTask>("generateTypeScriptClient") {
         "codegen.yml"
     ))
 
-    inputs.file(schemaPath)
+    inputs.dir(schemaDir)
     inputs.file("${layout.projectDirectory}/schema/queries.graphql")
     inputs.file("codegen.yml")
     outputs.dir(generatedTsCodePath)
@@ -67,7 +70,7 @@ val generatedKtCodePath = "$generatedCodePath/kotlin"
 val customKtPackageName = "${rootProject.group}.${project.group}.${project.name}"
 
 val graphqlKotlinCodegen by tasks.named<GraphQLCodegenGradleTask>("graphqlCodegen") {
-    graphqlSchemaPaths = listOf(schemaPath)
+    graphqlSchemaPaths = schemaPaths
     outputDir = File(generatedKtCodePath)
     packageName = customKtPackageName
     apiPackageName = "$customKtPackageName.api"
@@ -84,10 +87,14 @@ val graphqlKotlinCodegen by tasks.named<GraphQLCodegenGradleTask>("graphqlCodege
     )
 
     doLast {
-        val sourceFile = file("schema/schema.graphqls")
-        val destinationFile = file("src/generated/resources/graphql/schema.graphqls")
-        destinationFile.parentFile.mkdirs()
-        sourceFile.copyTo(destinationFile, overwrite = true)
+        schemaPaths.forEach {
+            file(it).mkdirs()
+            file(it).copyTo(
+                file("$generatedCodePath/resources/graphql/${it.substringAfterLast("/")}"),
+                overwrite = true
+            )
+        }
+
     }
 }
 

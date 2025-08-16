@@ -3,7 +3,7 @@ package dev.besi.repvault.backend.data.entity
 import jakarta.persistence.*
 
 @Entity
-data class Set(
+data class ExerciseSet(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,

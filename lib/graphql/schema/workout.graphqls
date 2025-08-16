@@ -1,0 +1,48 @@
+type Workout {
+    id: ID!
+    name: String!
+    setGroups: [SetGroup!]!
+}
+
+input WorkoutInput {
+    name: String!
+    setGroups: [SetGroupInput!]!
+}
+
+type SetGroup {
+    id: ID!
+    sets: [Set!]!
+}
+
+input SetGroupInput {
+    sets: [SetInput!]!
+}
+
+type Set {
+    id: ID!
+    exercise: Exercise!
+    repetitions: Int
+    weight: Float
+    weightUnit: WeightUnit!
+    setType: SetType!
+    restAfter: Int
+}
+
+input SetInput {
+    exerciseId: ID!
+    repetitions: Int
+    weight: Float
+    weightUnit: WeightUnit!
+    setType: SetType!
+    restAfter: Int
+}
+
+enum WeightUnit {
+    KG
+    LB
+}
+
+enum SetType {
+    WARM_UP
+    MAIN
+}

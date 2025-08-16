@@ -1,4 +1,4 @@
-schema: schema/schema.graphqls
+schema: "schema/**/*.graphqls"
 documents: "schema/**/*.graphql"
 generates:
   src/generated/typescript/client.ts:
