@@ -2,14 +2,16 @@
 
 import Table from "@/app/components/Table/Table";
 import {useDeleteExerciseMutation, useExercisesQuery} from "repvault-api-client";
-import {Button, Spinner} from "@material-tailwind/react";
+import {Button, Spinner, Typography} from "@material-tailwind/react";
 import {PencilIcon, TrashIcon} from "@heroicons/react/24/solid";
 
 export default function Exercises() {
   const {isPending, data, refetch} = useExercisesQuery()
   const {mutate: deleteExercise} = useDeleteExerciseMutation();
 
-  return isPending ? <Spinner className="h-8 w-8 mx-auto"/> : (
+  return (<div>
+    <Typography variant="h4" className="mb-4">Exercises</Typography>
+    {isPending ? <Spinner className="h-8 w-8 mx-auto"/> : (
     <>
       <a href="exercises/add">
         <Button className="mb-4" size="sm" variant="outlined" ripple={false}>Add</Button>
@@ -50,6 +52,6 @@ export default function Exercises() {
           }
         ]}
       />
-    </>
-  );
+    </>)}
+  </div>);
 }
