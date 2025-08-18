@@ -4,9 +4,16 @@ extend type Query {
 }
 
 extend type Mutation {
-    createWorkout(input: WorkoutInput!): Workout!
-    updateWorkout(id: ID!, input: WorkoutInput!): Workout!
+    createEmptyWorkout(name: String!): Workout!
+    updateWorkoutName(id: ID!, newName: String!): Workout!
     deleteWorkout(id: ID!): Boolean!
+
+    addNewSetGroup(workoutId: ID!): Workout!
+    deleteSetGroup(setGroupId: ID!): Workout!
+
+    addNewSet(setGroupId: ID!, set: SetInput!): Workout!
+    updateSet(setId: ID!, set: SetInput!): Workout!
+    deleteSet(setId: ID!): Workout!
 }
 
 type Workout {
@@ -15,18 +22,9 @@ type Workout {
     setGroups: [SetGroup!]!
 }
 
-input WorkoutInput {
-    name: String!
-    setGroups: [SetGroupInput!]!
-}
-
 type SetGroup {
     id: ID!
     sets: [Set!]!
-}
-
-input SetGroupInput {
-    sets: [SetInput!]!
 }
 
 type Set {
