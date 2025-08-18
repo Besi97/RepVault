@@ -8,6 +8,10 @@ data class SetGroup(
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long,
 
-	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "workout_id")
+	val workout: Workout,
+
+	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "setGroup")
 	val sets: Collection<ExerciseSet>,
 )

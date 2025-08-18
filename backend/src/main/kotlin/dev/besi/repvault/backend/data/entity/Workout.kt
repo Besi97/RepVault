@@ -11,6 +11,6 @@ data class Workout(
 	@Column(nullable = false)
 	val name: String,
 
-	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+	@OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "workout")
 	val setGroups: Collection<SetGroup>
 )

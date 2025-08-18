@@ -9,6 +9,10 @@ data class ExerciseSet(
     val id: Long,
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "set_group_id")
+    val setGroup: SetGroup,
+
+    @ManyToOne(optional = false)
     val exercise: Exercise,
 
     @Column
