@@ -45,7 +45,6 @@ const WorkoutsPage = () => {
     <div className="flex justify-between mb-4">
       <Typography variant="h4">Workouts</Typography>
       <Button
-        size="sm"
         variant="outlined"
         ripple={false}
         onClick={() => setIsNewWorkoutDialogOpen(true)}

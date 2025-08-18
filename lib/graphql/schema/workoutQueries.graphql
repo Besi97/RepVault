@@ -25,3 +25,7 @@ mutation CreateEmptyWorkout($name: String!) {
         id
     }
 }
+
+mutation DeleteWorkout($id: ID!) {
+    deleteWorkout(id: $id)
+}
