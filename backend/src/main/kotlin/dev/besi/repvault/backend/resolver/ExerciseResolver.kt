@@ -25,7 +25,10 @@ class ExerciseResolver(
 	override fun exercises(id: String?): List<Exercise> =
 		Optional.ofNullable(id)
 			.map { parseLong(it) }
-			.flatMap { exerciseRepository.findById(it) }
+			.map {
+				exerciseRepository.findById(it)
+					.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
+			}
 			.map { listOf(it) }
 			.orElse(exerciseRepository.findAll())
 			.map { exerciseMapper.toGraphQL(it) }

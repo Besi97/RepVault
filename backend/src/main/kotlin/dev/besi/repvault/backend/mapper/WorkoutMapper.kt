@@ -27,6 +27,7 @@ abstract class WorkoutMapper {
 
 	abstract fun toEntity(workout: WorkoutInput): Workout
 	abstract fun toEntity(setGroup: SetGroupInput): SetGroup
+
 	@Mapping(target = "exercise", source = "exerciseId")
 	abstract fun toEntity(set: SetInput): ExerciseSet
 	abstract fun toEntity(unit: WeightUnit?): GraphQLWeightUnit
