@@ -19,3 +19,9 @@ query Workouts($id: ID) {
         }
     }
 }
+
+mutation CreateEmptyWorkout($name: String!) {
+    createEmptyWorkout(name: $name) {
+        id
+    }
+}
