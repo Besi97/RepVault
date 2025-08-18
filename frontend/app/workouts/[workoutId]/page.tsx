@@ -1,7 +1,7 @@
 "use client"
 
 import {ComponentProps, FunctionComponent, use, useState} from "react";
-import {useDeleteWorkoutMutation, useWorkoutsQuery} from "repvault-api-client";
+import {useDeleteWorkoutMutation, useWorkoutsQuery, WorkoutsQuery} from "repvault-api-client";
 import {
   Button,
   Card,
@@ -20,7 +20,11 @@ interface Props {
   params: Promise<{ workoutId: string }>;
 }
 
-const columns: ComponentProps<typeof Table>['columns'] = [
+type Workout = WorkoutsQuery['workouts'][any];
+type SetGroup = Workout['setGroups'][any];
+type Set = SetGroup['sets'][any];
+
+const columns: ComponentProps<typeof Table<Set>>['columns'] = [
   {
     header: "Exercise",
     accessor: (row) => row.exercise.name,
