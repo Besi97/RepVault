@@ -32,7 +32,7 @@ class WorkoutResolver(
 	}.map { listOf(it) }.orElse(workoutRepository.findAll()).map { workoutMapper.toGraphQL(it) }
 
 	override fun createEmptyWorkout(name: String): Workout =
-		workoutRepository.save(dev.besi.repvault.backend.data.entity.Workout(-1L, name, listOf()))
+		workoutRepository.save(dev.besi.repvault.backend.data.entity.Workout(0L, name, listOf()))
 			.let { workoutMapper.toGraphQL(it) }
 
 	override fun updateWorkoutName(id: String, newName: String): Workout = workoutRepository.findById(parseLong(id))
@@ -50,7 +50,7 @@ class WorkoutResolver(
 		.map {
 			it.copy(
 				setGroups = listOf(
-					*it.setGroups.toTypedArray(), dev.besi.repvault.backend.data.entity.SetGroup(-1L, it, listOf())
+					*it.setGroups.toTypedArray(), dev.besi.repvault.backend.data.entity.SetGroup(0L, it, listOf())
 				)
 			)
 		}
