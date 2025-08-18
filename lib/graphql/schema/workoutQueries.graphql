@@ -1,0 +1,21 @@
+query Workouts($id: ID) {
+    workouts(id: $id) {
+        id
+        name
+        setGroups {
+            id
+            sets {
+                id
+                exercise {
+                    id
+                    name
+                }
+                repetitions
+                weight
+                weightUnit
+                setType
+                restAfter
+            }
+        }
+    }
+}

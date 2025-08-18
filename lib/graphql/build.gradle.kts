@@ -58,7 +58,6 @@ tasks.register<NpmTask>("generateTypeScriptClient") {
     ))
 
     inputs.dir(schemaDir)
-    inputs.file("${layout.projectDirectory}/schema/queries.graphql")
     inputs.file("codegen.yml")
     outputs.dir(generatedTsCodePath)
 
