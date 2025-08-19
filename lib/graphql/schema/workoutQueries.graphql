@@ -1,22 +1,6 @@
 query Workouts($id: ID) {
     workouts(id: $id) {
-        id
-        name
-        setGroups {
-            id
-            sets {
-                id
-                exercise {
-                    id
-                    name
-                }
-                repetitions
-                weight
-                weightUnit
-                setType
-                restAfter
-            }
-        }
+        ...fullWorkout
     }
 }
 
@@ -28,4 +12,36 @@ mutation CreateEmptyWorkout($name: String!) {
 
 mutation DeleteWorkout($id: ID!) {
     deleteWorkout(id: $id)
+}
+
+mutation AddEmptyRoutine($workoutId: ID!) {
+    addNewSetGroup(workoutId: $workoutId) {
+        id
+    }
+}
+
+mutation DeleteRoutine($routineId: ID!) {
+    deleteSetGroup(setGroupId: $routineId) {
+        id
+    }
+}
+
+fragment fullWorkout on Workout {
+    id
+    name
+    setGroups {
+        id
+        sets {
+            id
+            exercise {
+                id
+                name
+            }
+            repetitions
+            weight
+            weightUnit
+            setType
+            restAfter
+        }
+    }
 }
