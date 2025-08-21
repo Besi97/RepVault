@@ -17,7 +17,7 @@ export default function Exercises() {
         <Button className="mb-4" size="sm" variant="outlined" ripple={false}>Add</Button>
       </a>
       <Table
-        data={data?.exercises || []}
+        data={data?.exercises.data || []}
         columns={[
           {
             header: "id",

@@ -1,6 +1,13 @@
-query Exercises($id: ID) {
-    exercises(id: $id) {
-        ...fullExercise
+query Exercises($id: ID, $pagination: PaginationInput) {
+    exercises(id: $id, pagination: $pagination) {
+        data {
+            ...fullExercise
+        }
+        pageInfo {
+            pageIndex
+            hasNextPage
+        }
+        totalCount
     }
 }
 

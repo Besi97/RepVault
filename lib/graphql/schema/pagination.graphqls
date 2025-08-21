@@ -1,0 +1,14 @@
+interface PaginatedList {
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type PageInfo {
+    pageIndex: Int!
+    hasNextPage: Boolean!
+}
+
+input PaginationInput {
+    count: Int!
+    pageIndex: Int
+}

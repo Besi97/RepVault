@@ -1,6 +1,12 @@
 extend type Query {
     """ Retrieves a single exercise with the given ID, or all exercises if ID is not provided """
-    exercises(id: ID): [Exercise!]!
+    exercises(id: ID, pagination: PaginationInput): ExercisesResponse!
+}
+
+type ExercisesResponse implements PaginatedList {
+    data: [Exercise!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
 }
 
 extend type Mutation {

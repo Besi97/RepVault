@@ -6,32 +6,37 @@ import dev.besi.repvault.lib.graphql.api.CreateExerciseMutationResolver
 import dev.besi.repvault.lib.graphql.api.DeleteExerciseMutationResolver
 import dev.besi.repvault.lib.graphql.api.ExercisesQueryResolver
 import dev.besi.repvault.lib.graphql.api.UpdateExerciseMutationResolver
-import dev.besi.repvault.lib.graphql.model.Exercise
-import dev.besi.repvault.lib.graphql.model.ExerciseInput
+import dev.besi.repvault.lib.graphql.model.*
+import org.springframework.data.domain.*
 import org.springframework.stereotype.Controller
 import java.lang.Long.parseLong
-import java.util.Optional
+import java.util.*
 
 @Controller
 class ExerciseResolver(
 	private val exerciseRepository: ExerciseRepository,
-	private val exerciseMapper: ExerciseMapper
-) :
-	ExercisesQueryResolver,
+	private val exerciseMapper: ExerciseMapper,
+) : ExercisesQueryResolver,
 	CreateExerciseMutationResolver,
 	UpdateExerciseMutationResolver,
 	DeleteExerciseMutationResolver {
 
-	override fun exercises(id: String?): List<Exercise> =
-		Optional.ofNullable(id)
-			.map { parseLong(it) }
-			.map {
-				exerciseRepository.findById(it)
-					.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
-			}
-			.map { listOf(it) }
-			.orElse(exerciseRepository.findAll())
-			.map { exerciseMapper.toGraphQL(it) }
+	override fun exercises(id: String?, pagination: PaginationInput?): ExercisesResponse =
+		Optional.ofNullable(id).map { parseLong(it) }.map {
+			exerciseRepository.findById(it).orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
+		}.map<Page<dev.besi.repvault.backend.data.entity.Exercise>> { PageImpl(listOf(it)) }.or {
+			val sort = Sort.by("name")
+			val pageRequest = Optional.ofNullable(pagination).map<Pageable> {
+				PageRequest.of(it.pageIndex ?: 0, it.count, sort)
+			}.orElse(Pageable.unpaged(sort))
+			return@or Optional.of(exerciseRepository.findAll(pageRequest))
+		}.map {
+			ExercisesResponse(
+				exerciseMapper.toGraphQL(it.content),
+				PageInfo(it.number, it.totalPages > it.number + 1),
+				it.totalElements.toInt()
+			)
+		}.get()
 
 	override fun createExercise(input: ExerciseInput): Exercise =
 		exerciseRepository.save(exerciseMapper.toEntity(input)).let { exerciseMapper.toGraphQL(it) }
@@ -58,7 +63,8 @@ class ExerciseResolver(
 			.map { exerciseMapper.toGraphQL(it) }
 			.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
 
-	override fun deleteExercise(id: String): Boolean =
-		exerciseRepository.findById(parseLong(id)).map { exerciseRepository.delete(it) }.map { true }
-			.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
+	override fun deleteExercise(id: String): Boolean = exerciseRepository.findById(parseLong(id))
+		.map { exerciseRepository.delete(it) }
+		.map { true }
+		.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
 }

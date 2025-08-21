@@ -12,6 +12,7 @@ import dev.besi.repvault.lib.graphql.model.Mechanic as GraphQLMechanic
 
 @Mapper(componentModel = "spring")
 interface ExerciseMapper {
+	fun toGraphQL(exercise: List<Exercise>): List<GraphQLExercise>
 	fun toGraphQL(exercise: Exercise): GraphQLExercise
 
 	fun toEntity(exercise: ExerciseInput): Exercise

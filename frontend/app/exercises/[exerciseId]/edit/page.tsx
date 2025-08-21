@@ -20,7 +20,7 @@ const EditExercisePage: FunctionComponent<Props> = ({params}) => {
   return isPending ? (<Spinner/>) : (<>
       <Typography variant="h4">Edit Exercise</Typography>
       {isError && <ErrorBanner>There was an error saving the exercise.</ErrorBanner>}
-      <AddEditForm exercise={data?.exercises?.[0]} onSubmit={(exercise, finalizeSubmit) =>
+      <AddEditForm exercise={data?.exercises.data[0]} onSubmit={(exercise, finalizeSubmit) =>
         edit(
           {
             id: exerciseId,
