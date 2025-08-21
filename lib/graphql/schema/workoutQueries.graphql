@@ -26,6 +26,12 @@ mutation DeleteRoutine($routineId: ID!) {
     }
 }
 
+mutation AddEmptySet($setGroupId: ID!, $exerciseId: ID!) {
+    addNewSet(setGroupId: $setGroupId, set: {exerciseId: $exerciseId}) {
+        id
+    }
+}
+
 fragment fullWorkout on Workout {
     id
     name

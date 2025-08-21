@@ -1,8 +1,9 @@
 import {ComponentProps, FunctionComponent, useState} from "react";
-import {useDeleteRoutineMutation, WorkoutsQuery} from "repvault-api-client";
+import {useAddEmptySetMutation, useDeleteRoutineMutation, WorkoutsQuery} from "repvault-api-client";
 import {Button, Card, CardBody, Typography} from "@material-tailwind/react";
 import Table from "@/app/components/Table/Table";
 import DeleteDialog from "@/app/workouts/[workoutId]/components/DeleteDialog";
+import ExerciseSelectorDialog from "@/app/workouts/[workoutId]/components/ExerciseSelectorDialog";
 
 interface Props {
   workout: WorkoutsQuery['workouts'][any];
@@ -39,8 +40,11 @@ const WorkoutDetails: FunctionComponent<Props> = ({
   refetch,
 }) => {
   const [isDeleteRoutineDialogOpen, setIsDeleteRoutineDialogOpen] = useState(false);
-  const [routineIdToDelete, setRoutineIdToDelete] = useState<string>();
+  const [routineIdToDelete, setRoutineIdToDelete] = useState<string | undefined>();
   const {mutate: deleteRoutine, isPending: isDeleteRoutineIsPending} = useDeleteRoutineMutation();
+  const [isExerciseSelectorDialogOpen, setIsExerciseSelectorDialogOpen] = useState(false);
+  const [routineIdToExtend, setRoutineIdToExtend] = useState<string | undefined>();
+  const {mutate: addSet} = useAddEmptySetMutation();
 
   return <div>
     {workout.setGroups.length === 0 &&
@@ -50,22 +54,36 @@ const WorkoutDetails: FunctionComponent<Props> = ({
         <CardBody>
           <div className="flex justify-between mb-2">
             <Typography variant="h5" color="blue-gray">Routine #{index + 1}</Typography>
-            <Button
-              color="red"
-              ripple={false}
-              onClick={() => {
-                setIsDeleteRoutineDialogOpen(true);
-                setRoutineIdToDelete(setGroup.id);
-              }}
-            >
-              Delete
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                ripple={false}
+                variant="outlined"
+                onClick={() => {
+                  setRoutineIdToExtend(setGroup.id)
+                  setIsExerciseSelectorDialogOpen(true)
+                }}
+              >
+                Add Set
+              </Button>
+              <Button
+                color="red"
+                ripple={false}
+                onClick={() => {
+                  setIsDeleteRoutineDialogOpen(true);
+                  setRoutineIdToDelete(setGroup.id);
+                }}
+              >
+                Delete
+              </Button>
+            </div>
           </div>
-          <Table
-            data={setGroup.sets}
-            columns={columns}
-            rowKey={(row) => `${setGroup.id}/${row.id}`}
-          />
+          {setGroup.sets.length === 0
+            ? <Typography className="text-center text-blue-gray-500">No sets</Typography>
+            : <Table
+              data={setGroup.sets}
+              columns={columns}
+              rowKey={(row) => `${setGroup.id}/${row.id}`}
+            />}
         </CardBody>
       </Card>
     ))}
@@ -76,12 +94,28 @@ const WorkoutDetails: FunctionComponent<Props> = ({
       isDeletePending={isDeleteRoutineIsPending}
       deleteCallback={() => routineIdToDelete && deleteRoutine(
         {
-          routineId: routineIdToDelete
+          routineId: routineIdToDelete,
         },
         {
           onSuccess: () => {
             setIsDeleteRoutineDialogOpen(false);
             refetch();
+          },
+        },
+      )}
+    />
+    <ExerciseSelectorDialog
+      open={isExerciseSelectorDialogOpen}
+      handler={setIsExerciseSelectorDialogOpen}
+      selectCallback={(exerciseId) => routineIdToExtend && addSet(
+        {
+          setGroupId: routineIdToExtend,
+          exerciseId
+        },
+        {
+          onSuccess: () => {
+            setIsExerciseSelectorDialogOpen(false)
+            refetch()
           }
         }
       )}

@@ -32,8 +32,8 @@ type Set {
     exercise: Exercise!
     repetitions: Int
     weight: Float
-    weightUnit: WeightUnit!
-    setType: SetType!
+    weightUnit: WeightUnit
+    setType: SetType
     restAfter: Int
 }
 
@@ -41,8 +41,8 @@ input SetInput {
     exerciseId: ID!
     repetitions: Int
     weight: Float
-    weightUnit: WeightUnit!
-    setType: SetType!
+    weightUnit: WeightUnit
+    setType: SetType
     restAfter: Int
 }
 

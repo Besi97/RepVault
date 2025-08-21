@@ -13,7 +13,7 @@ interface Props {
 
 const EditExercisePage: FunctionComponent<Props> = ({params}) => {
   const {exerciseId} = use(params);
-  const {isPending, data} = useExercisesQuery({id: exerciseId});
+  const {isPending, data} = useExercisesQuery({filters: {id: exerciseId}});
   const {mutate: edit, isError} = useUpdateExerciseMutation();
   const {push} = useRouter();
 
@@ -24,13 +24,13 @@ const EditExercisePage: FunctionComponent<Props> = ({params}) => {
         edit(
           {
             id: exerciseId,
-            input: exercise
+            input: exercise,
           },
           {
             onSuccess: () => push("/exercises"),
             onError: () => window.scrollTo(0, 0),
-            onSettled: finalizeSubmit
-          }
+            onSettled: finalizeSubmit,
+          },
         )
       }/>
     </>

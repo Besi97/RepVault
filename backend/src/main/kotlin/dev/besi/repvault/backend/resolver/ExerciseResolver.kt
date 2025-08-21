@@ -21,15 +21,21 @@ class ExerciseResolver(
 	UpdateExerciseMutationResolver,
 	DeleteExerciseMutationResolver {
 
-	override fun exercises(id: String?, pagination: PaginationInput?): ExercisesResponse =
-		Optional.ofNullable(id).map { parseLong(it) }.map {
-			exerciseRepository.findById(it).orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
+	override fun exercises(filters: ExerciseFilters?, pagination: PaginationInput?): ExercisesResponse =
+		Optional.ofNullable(filters?.id).map { parseLong(it) }.map {
+			exerciseRepository.findById(it)
+				.orElseThrow { IllegalArgumentException("Exercise with ID ${filters?.id} not found") }
 		}.map<Page<dev.besi.repvault.backend.data.entity.Exercise>> { PageImpl(listOf(it)) }.or {
 			val sort = Sort.by("name")
 			val pageRequest = Optional.ofNullable(pagination).map<Pageable> {
 				PageRequest.of(it.pageIndex ?: 0, it.count, sort)
 			}.orElse(Pageable.unpaged(sort))
-			return@or Optional.of(exerciseRepository.findAll(pageRequest))
+			return@or Optional.of(filters?.name?.let {
+				exerciseRepository.findAllByNameContainsIgnoreCase(
+					it,
+					pageRequest
+				)
+			} ?: exerciseRepository.findAll(pageRequest))
 		}.map {
 			ExercisesResponse(
 				exerciseMapper.toGraphQL(it.content),
@@ -41,27 +47,26 @@ class ExerciseResolver(
 	override fun createExercise(input: ExerciseInput): Exercise =
 		exerciseRepository.save(exerciseMapper.toEntity(input)).let { exerciseMapper.toGraphQL(it) }
 
-	override fun updateExercise(id: String, input: ExerciseInput): Exercise =
-		exerciseRepository.findById(parseLong(id))
-			.map { existingExercise ->
-				existingExercise.copy(
-					name = input.name,
-					aliases = input.aliases,
-					primaryMuscles = exerciseMapper.toEntityMuscles(input.primaryMuscles),
-					secondaryMuscles = exerciseMapper.toEntityMuscles(input.secondaryMuscles),
-					force = exerciseMapper.toEntityForce(input.force),
-					level = exerciseMapper.toEntityLevel(input.level),
-					mechanic = exerciseMapper.toEntityMechanic(input.mechanic),
-					equipment = exerciseMapper.toEntityEquipment(input.equipment),
-					category = exerciseMapper.toEntityCategory(input.category),
-					instructions = input.instructions,
-					description = input.description,
-					tips = input.tips
-				)
-			}
-			.map { exerciseRepository.save(it) }
-			.map { exerciseMapper.toGraphQL(it) }
-			.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
+	override fun updateExercise(id: String, input: ExerciseInput): Exercise = exerciseRepository.findById(parseLong(id))
+		.map { existingExercise ->
+			existingExercise.copy(
+				name = input.name,
+				aliases = input.aliases,
+				primaryMuscles = exerciseMapper.toEntityMuscles(input.primaryMuscles),
+				secondaryMuscles = exerciseMapper.toEntityMuscles(input.secondaryMuscles),
+				force = exerciseMapper.toEntityForce(input.force),
+				level = exerciseMapper.toEntityLevel(input.level),
+				mechanic = exerciseMapper.toEntityMechanic(input.mechanic),
+				equipment = exerciseMapper.toEntityEquipment(input.equipment),
+				category = exerciseMapper.toEntityCategory(input.category),
+				instructions = input.instructions,
+				description = input.description,
+				tips = input.tips
+			)
+		}
+		.map { exerciseRepository.save(it) }
+		.map { exerciseMapper.toGraphQL(it) }
+		.orElseThrow { IllegalArgumentException("Exercise with ID $id not found") }
 
 	override fun deleteExercise(id: String): Boolean = exerciseRepository.findById(parseLong(id))
 		.map { exerciseRepository.delete(it) }

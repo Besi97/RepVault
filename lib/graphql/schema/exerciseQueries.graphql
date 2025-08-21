@@ -1,5 +1,5 @@
-query Exercises($id: ID, $pagination: PaginationInput) {
-    exercises(id: $id, pagination: $pagination) {
+query Exercises($filters: ExerciseFilters, $pagination: PaginationInput) {
+    exercises(filters: $filters, pagination: $pagination) {
         data {
             ...fullExercise
         }

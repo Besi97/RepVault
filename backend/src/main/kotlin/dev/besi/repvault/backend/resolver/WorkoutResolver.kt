@@ -70,7 +70,7 @@ class WorkoutResolver(
 	override fun addNewSet(setGroupId: String, set: SetInput): Workout =
 		setGroupRepository.findById(parseLong(setGroupId))
 			.map {
-				val set = workoutMapper.toEntity(set)
+				val set = workoutMapper.toEntity(setGroupId, set)
 				return@map it.copy(
 					sets = listOf(*it.sets.toTypedArray(), set)
 				)
