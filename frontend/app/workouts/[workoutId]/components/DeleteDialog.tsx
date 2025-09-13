@@ -20,7 +20,7 @@ const DeleteDialog: FunctionComponent<Props> = ({
     open={open}
     handler={handler}
   >
-    <DialogHeader>Delete Workout</DialogHeader>
+    <DialogHeader>{`Delete ${description}`}</DialogHeader>
     <DialogBody>
       {`Are you sure you want to delete ${description}?`}
     </DialogBody>

@@ -21,28 +21,28 @@ export default function Exercises() {
         columns={[
           {
             header: "id",
-            accessor: (row) => row.id,
+            accessor: (row) => row.value.id,
           },
           {
             header: "name",
-            accessor: (row) => row.name,
+            accessor: (row) => row.value.name,
           },
           {
             header: "instruction",
-            accessor: (row) => row.instructions.join(", ")
+            accessor: (row) => row.value.instructions.join(", ")
           }
         ]}
         rowKey={(row) => `${row.id}-${row.name}`}
         rowActions={[
           {
             icon: <PencilIcon className="size-full"/>,
-            link: ({id}) => `exercises/${id}/edit`
+            link: ({value}) => `exercises/${value.id}/edit`
           },
           {
             icon: <TrashIcon className="size-full"/>,
             color: "red",
-            onClick: ({id}, finalizeAction) => {
-              deleteExercise({id}, {
+            onClick: ({value}, finalizeAction) => {
+              deleteExercise({id: value.id}, {
                 onSettled: () => {
                   finalizeAction();
                   refetch();

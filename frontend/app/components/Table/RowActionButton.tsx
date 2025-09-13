@@ -1,19 +1,20 @@
 import {ReactNode, useState} from "react";
 import {colors} from "@material-tailwind/react/types/generic";
 import {IconButton, Spinner} from "@material-tailwind/react";
+import {Row} from "./Table";
 
 type Subset<T, U extends T> = U;
 
 export interface RowAction<T> {
   icon: ReactNode,
-  link?: string | ((row: T) => string),
+  link?: string | ((row: Row<T>) => string),
   /** Action to perform on click. Caller should call the `finalizeAction` function once the action is finished */
-  onClick?: (row: T, finalizeAction: () => void) => void,
+  onClick?: (row: Row<T>, finalizeAction: () => void) => void,
   color?: Subset<colors, "blue-gray" | "red">
 }
 
 interface Props<T> extends RowAction<T> {
-  row: T,
+  row: Row<T>,
 }
 
 const actionButtonClassName = (color: RowAction<never>["color"]) => {

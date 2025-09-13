@@ -1,39 +1,19 @@
-import {ComponentProps, FunctionComponent, useState} from "react";
-import {useAddEmptySetMutation, useDeleteRoutineMutation, WorkoutsQuery} from "repvault-api-client";
+import {FunctionComponent, useState} from "react";
+import {
+  useAddEmptySetMutation,
+  useDeleteRoutineMutation, useWorkoutsQuery,
+  WorkoutsQuery,
+} from "repvault-api-client";
 import {Button, Card, CardBody, Typography} from "@material-tailwind/react";
-import Table from "@/app/components/Table/Table";
 import DeleteDialog from "@/app/workouts/[workoutId]/components/DeleteDialog";
 import ExerciseSelectorDialog from "@/app/workouts/[workoutId]/components/ExerciseSelectorDialog";
+import RoutineTable from "@/app/workouts/[workoutId]/components/RoutineTable";
 
 interface Props {
   workout: WorkoutsQuery['workouts'][any];
-  refetch: () => void;
+  refetch: ReturnType<typeof useWorkoutsQuery>['refetch'];
 }
 
-type Set = WorkoutsQuery['workouts'][any]['setGroups'][any]['sets'][any];
-
-const columns: ComponentProps<typeof Table<Set>>['columns'] = [
-  {
-    header: "Exercise",
-    accessor: (row) => row.exercise.name,
-  },
-  {
-    header: "Type",
-    accessor: (row) => row.setType,
-  },
-  {
-    header: "Weight",
-    accessor: (row) => `${row.weight} ${row.weightUnit}`,
-  },
-  {
-    header: "Repetitions",
-    accessor: (row) => row.repetitions,
-  },
-  {
-    header: "Rest",
-    accessor: (row) => `${row.restAfter} sec`,
-  },
-]
 
 const WorkoutDetails: FunctionComponent<Props> = ({
   workout,
@@ -79,11 +59,8 @@ const WorkoutDetails: FunctionComponent<Props> = ({
           </div>
           {setGroup.sets.length === 0
             ? <Typography className="text-center text-blue-gray-500">No sets</Typography>
-            : <Table
-              data={setGroup.sets}
-              columns={columns}
-              rowKey={(row) => `${setGroup.id}/${row.id}`}
-            />}
+            : <RoutineTable setGroup={setGroup} refetch={refetch} />
+          }
         </CardBody>
       </Card>
     ))}
@@ -110,14 +87,14 @@ const WorkoutDetails: FunctionComponent<Props> = ({
       selectCallback={(exerciseId) => routineIdToExtend && addSet(
         {
           setGroupId: routineIdToExtend,
-          exerciseId
+          exerciseId,
         },
         {
           onSuccess: () => {
             setIsExerciseSelectorDialogOpen(false)
             refetch()
-          }
-        }
+          },
+        },
       )}
     />
   </div>
