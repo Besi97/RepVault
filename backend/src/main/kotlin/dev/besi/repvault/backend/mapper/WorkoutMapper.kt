@@ -27,6 +27,7 @@ abstract class WorkoutMapper {
 	abstract fun toGraphQl(type: GraphQLSetType?): SetType
 
 	@Mapping(target = "exercise", source = "exerciseId")
+	// For some reason, the removal of this unused method leads to a build error
 	abstract fun toEntity(set: SetInput): ExerciseSet
 	@Mapping(target = "exercise", source = "set.exerciseId")
 	@Mapping(target = "setGroup", source = "setGroupId")

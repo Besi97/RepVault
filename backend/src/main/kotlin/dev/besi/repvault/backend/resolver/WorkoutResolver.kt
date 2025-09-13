@@ -83,7 +83,7 @@ class WorkoutResolver(
 	override fun updateSet(setId: String, set: SetInput): Workout =
 		exerciseSetRepository.findById(parseLong(setId))
 			.map {
-				val updatedSet = workoutMapper.toEntity(set)
+				val updatedSet = workoutMapper.toEntity(it.setGroup.id.toString(), set)
 				return@map it.copy(
 					exercise = updatedSet.exercise,
 					repetitions = updatedSet.repetitions,
