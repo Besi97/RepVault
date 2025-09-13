@@ -26,11 +26,9 @@ abstract class WorkoutMapper {
 	abstract fun toGraphQl(unit: GraphQLWeightUnit?): WeightUnit
 	abstract fun toGraphQl(type: GraphQLSetType?): SetType
 
-	@Mapping(target = "exercise", source = "exerciseId")
-	// For some reason, the removal of this unused method leads to a build error
-	abstract fun toEntity(set: SetInput): ExerciseSet
 	@Mapping(target = "exercise", source = "set.exerciseId")
 	@Mapping(target = "setGroup", source = "setGroupId")
+	@Mapping(target = "weightUnit", source = "set.weightUnit", defaultValue = "KG")
 	abstract fun toEntity(setGroupId: String, set: SetInput): ExerciseSet
 	abstract fun toEntity(unit: WeightUnit?): GraphQLWeightUnit
 	abstract fun toEntity(type: SetType?): GraphQLSetType

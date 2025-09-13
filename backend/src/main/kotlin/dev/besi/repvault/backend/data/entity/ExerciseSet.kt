@@ -22,7 +22,7 @@ data class ExerciseSet(
     val weight: Double?,
 
     @Enumerated(EnumType.STRING)
-    val weightUnit: WeightUnit?,
+    val weightUnit: WeightUnit,
 
     @Enumerated(EnumType.STRING)
     val setType: SetType?,
