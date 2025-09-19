@@ -22,7 +22,7 @@ const WorkoutDetailsPage: FunctionComponent<Props> = ({params}) => {
 
   return isPending ? <Spinner className="h-8 w-8 mx-auto"/> :
     <div>
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-4 items-center">
         <Typography variant="h4">{workout?.name}</Typography>
         <div className="flex gap-4">
           <Button

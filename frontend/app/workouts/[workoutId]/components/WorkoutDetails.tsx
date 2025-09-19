@@ -32,7 +32,7 @@ const WorkoutDetails: FunctionComponent<Props> = ({
     {workout.setGroups.map((setGroup, index) => (
       <Card className="mb-4 bg-teal-50" key={setGroup.id}>
         <CardBody>
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between mb-2 items-center">
             <Typography variant="h5" color="blue-gray">Routine #{index + 1}</Typography>
             <div className="flex gap-4">
               <Button
