@@ -1,19 +1,19 @@
 import {FunctionComponent, useState} from "react";
 import {
-  useAddEmptySetMutation,
   useDeleteRoutineMutation, useWorkoutsQuery,
   WorkoutsQuery,
+  useAddNewSetMutation,
 } from "repvault-api-client";
 import {Button, Card, CardBody, Typography} from "@material-tailwind/react";
 import DeleteDialog from "@/app/workouts/[workoutId]/components/DeleteDialog";
 import ExerciseSelectorDialog from "@/app/workouts/[workoutId]/components/ExerciseSelectorDialog";
 import RoutineTable from "@/app/workouts/[workoutId]/components/RoutineTable";
+import SetEditorDialog from "@/app/workouts/[workoutId]/components/SetEditorDialog";
 
 interface Props {
   workout: WorkoutsQuery['workouts'][any];
   refetch: ReturnType<typeof useWorkoutsQuery>['refetch'];
 }
-
 
 const WorkoutDetails: FunctionComponent<Props> = ({
   workout,
@@ -23,8 +23,10 @@ const WorkoutDetails: FunctionComponent<Props> = ({
   const [routineIdToDelete, setRoutineIdToDelete] = useState<string | undefined>();
   const {mutate: deleteRoutine, isPending: isDeleteRoutineIsPending} = useDeleteRoutineMutation();
   const [isExerciseSelectorDialogOpen, setIsExerciseSelectorDialogOpen] = useState(false);
+  const [selectedExerciseId, setSelectedExerciseId] = useState<string | undefined>();
+  const [isSetEditorDialogOpen, setIsSetEditorDialogOpen] = useState(false);
   const [routineIdToExtend, setRoutineIdToExtend] = useState<string | undefined>();
-  const {mutate: addSet} = useAddEmptySetMutation();
+  const {mutate: addSet} = useAddNewSetMutation();
 
   return <div>
     {workout.setGroups.length === 0 &&
@@ -59,7 +61,7 @@ const WorkoutDetails: FunctionComponent<Props> = ({
           </div>
           {setGroup.sets.length === 0
             ? <Typography className="text-center text-blue-gray-500">No sets</Typography>
-            : <RoutineTable setGroup={setGroup} refetch={refetch} />
+            : <RoutineTable setGroup={setGroup} refetch={refetch}/>
           }
         </CardBody>
       </Card>
@@ -81,22 +83,39 @@ const WorkoutDetails: FunctionComponent<Props> = ({
         },
       )}
     />
-    <ExerciseSelectorDialog
+    {routineIdToExtend && <ExerciseSelectorDialog
       open={isExerciseSelectorDialogOpen}
       handler={setIsExerciseSelectorDialogOpen}
-      selectCallback={(exerciseId) => routineIdToExtend && addSet(
-        {
-          setGroupId: routineIdToExtend,
-          exerciseId,
-        },
-        {
-          onSuccess: () => {
-            setIsExerciseSelectorDialogOpen(false)
-            refetch()
-          },
-        },
-      )}
-    />
+      selectCallback={(exerciseId) => {
+        setSelectedExerciseId(exerciseId);
+        setIsExerciseSelectorDialogOpen(false);
+        setIsSetEditorDialogOpen(true);
+      }}
+    />}
+    {routineIdToExtend && selectedExerciseId &&
+        <SetEditorDialog
+            open={isSetEditorDialogOpen}
+            set={{exerciseId: selectedExerciseId}}
+            onSubmit={(set) => addSet(
+              {
+                setGroupId: routineIdToExtend,
+                set,
+              },
+              {
+                onSettled: () => {
+                  setIsSetEditorDialogOpen(false);
+                  refetch();
+                },
+              },
+            )}
+            onCancel={() => {
+                  setSelectedExerciseId(undefined);
+                  setRoutineIdToExtend(undefined);
+                  setIsSetEditorDialogOpen(false);
+                  refetch();
+            }}
+        />
+    }
   </div>
 }
 

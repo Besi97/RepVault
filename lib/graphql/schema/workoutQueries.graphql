@@ -32,6 +32,12 @@ mutation AddEmptySet($setGroupId: ID!, $exerciseId: ID!) {
     }
 }
 
+mutation AddNewSet($setGroupId: ID!, $set: SetInput!) {
+    addNewSet(setGroupId: $setGroupId, set: $set) {
+        id
+    }
+}
+
 mutation DeleteSet($setId: ID!) {
     deleteSet(setId: $setId) {
         id
