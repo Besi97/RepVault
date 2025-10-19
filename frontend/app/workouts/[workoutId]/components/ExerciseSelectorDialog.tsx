@@ -17,32 +17,30 @@ const ExerciseSelectorDialog: FunctionComponent<Props> = ({
   const {data} = useExercisesQuery({filters: {name: nameSearch}, pagination: {count: 10}})
 
   return <Dialog open={open} handler={handler}>
+    <DialogHeader>
+      Select Exercise
+    </DialogHeader>
     <DialogBody>
-      <DialogHeader>
-        Select Exercise
-      </DialogHeader>
-      <DialogBody>
-        <Input
-          label="Search"
-          type="text"
-          value={nameSearch}
-          onChange={(event) => setNameSearch(event.target.value)}
-        />
-        <ul className="mt-4">
-          {data?.exercises.data.map((exercise) =>
-            <li
-              key={exercise.id}
-              className="hover:shadow rounded-md"
-              onClick={() => {
-                selectCallback(exercise.id)
-                handler(false)
-              }}
-            >
-              <Typography className="p-2">{exercise.name}</Typography>
-            </li>
-          )}
-        </ul>
-      </DialogBody>
+      <Input
+        label="Search"
+        type="text"
+        value={nameSearch}
+        onChange={(event) => setNameSearch(event.target.value)}
+      />
+      <ul className="mt-4">
+        {data?.exercises.data.map((exercise) =>
+          <li
+            key={exercise.id}
+            className="hover:shadow rounded-md"
+            onClick={() => {
+              selectCallback(exercise.id)
+              handler(false)
+            }}
+          >
+            <Typography className="p-2">{exercise.name}</Typography>
+          </li>,
+        )}
+      </ul>
     </DialogBody>
   </Dialog>
 }
