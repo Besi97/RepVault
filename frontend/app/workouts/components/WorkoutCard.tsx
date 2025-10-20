@@ -2,10 +2,11 @@ import {FunctionComponent} from "react";
 import {WorkoutsQuery} from "repvault-api-client";
 import {Card, CardBody, Typography} from "@material-tailwind/react";
 
-const exerciseListFromWorkout = (workout?: WorkoutsQuery['workouts'][any]): string | undefined => {
-  const exercises = workout?.setGroups.flatMap((setGroup) => setGroup.sets).map((set) => set.exercise.name);
-  return exercises === undefined ? undefined : exercises.length === 0 ? "No exercises" : `Exercises: ${exercises.join(
-    ", ")}`
+const exerciseListFromWorkout = (workout: WorkoutsQuery['workouts'][any]): string | undefined => {
+  const exercises = [
+    ...new Set(workout.setGroups.flatMap((setGroup) => setGroup.sets).map((set) => set.exercise.name)),
+  ];
+  return !exercises.length ? "No exercises" : `Exercises: ${exercises.join(", ")}`
 }
 
 interface Props {
