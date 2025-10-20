@@ -7,26 +7,26 @@ interface Props extends InputProps {
   label: string;
   name: string;
   required?: boolean;
-  inputMode: "numeric";
+  inputMode?: "numeric" | "decimal";
 }
 
-const NumericField: FunctionComponent<Props> = ({label, name, required, ...props}) => {
-  const [field, {touched, error}, {setValue}] = useField<number | undefined>(name);
+const NumericField: FunctionComponent<Props> = ({
+  label,
+  name,
+  required,
+  inputMode = "numeric",
+  ...props
+}) => {
+  const [field, {touched, error}] = useField<number | undefined>(name);
 
   return <FormFieldWrapper error={touched ? error : undefined} required={required}>
     <Input
       {...props}
       {...field}
-      inputMode="numeric"
+      type="number"
+      inputMode={inputMode}
       label={label}
       error={touched && !!error}
-      onChange={(event) => {
-        field.onChange(event);
-        const value = event.target.value;
-        if (value) {
-          setValue(parseInt(value));
-        }
-      }}
     />
   </FormFieldWrapper>
 }

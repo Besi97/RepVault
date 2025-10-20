@@ -42,12 +42,12 @@ const SetEditorDialog: FunctionComponent<Props> = ({
             <Select label="Set Type" name="setType">
               {Object.entries(SetType).map(([key, value]) => <Option key={value} value={value}>{key}</Option>)}
             </Select>
-            <NumericField label="Weight" name="weight" inputMode="numeric"/>
+            <NumericField label="Weight" name="weight" inputMode="decimal"/>
             <Select label="Weight Unit" name="weightUnit">
               {Object.entries(WeightUnit).map(([key, value]) => <Option key={value} value={value}>{key}</Option>)}
             </Select>
-            <NumericField label="Repetitions" name="repetitions" inputMode="numeric"/>
-            <NumericField label="Rest After" name="restAfter" inputMode="numeric"/>
+            <NumericField label="Repetitions" name="repetitions"/>
+            <NumericField label="Rest After" name="restAfter"/>
             <div className="flex justify-end w-full gap-2">
               <Button loading={isSubmitting} variant="outlined" onClick={() => onCancel(setId)} ripple={false}>
                 Cancel
