@@ -13,7 +13,7 @@ interface Props {
   onCancel: (setId: string | undefined) => void;
 }
 
-const defaultValues: SetInput = {
+const defaultValues: Partial<SetInput> = {
   setType: SetType.Main,
   weightUnit: WeightUnit.Kg,
 }
